@@ -19,9 +19,11 @@ class BinarySearchTree{
 
 		bool hasValue(const T&) const;
 
+		int getHeight() const;
+
 		bool operator==(const BinarySearchTree<T>&) const;
 
-		ostream& mostrarBinarySearchTree(ostream&) const;
+		ostream& show(ostream&) const;
 
 	private:
 
@@ -38,8 +40,9 @@ class BinarySearchTree{
 		};
 
 		Node* root;
+		int height;
 
-		void addNode(Node*&, const T&);
+		void addNode(Node*&, const T&, const int&);
 		bool nodeHasValue(Node* const&, const T&) const;
 		string inorder(Node* const&) const;
 };
@@ -48,12 +51,13 @@ class BinarySearchTree{
 
 template<class T>
 ostream& operator<<(ostream& out, const BinarySearchTree<T>& a) {
-	return a.mostrarBinarySearchTree(out);
+	return a.show(out);
 }
 
 template<class T>
 BinarySearchTree<T>::BinarySearchTree(){
 	this->root = NULL;
+	this->height = 0;
 }
 
 template<class T>
@@ -67,21 +71,27 @@ BinarySearchTree<T>::~BinarySearchTree(){
 template<class T>
 void BinarySearchTree<T>::add(const T& value){
 	if(!hasValue(value)){
-		addNode(this->root, value);
+		addNode(this->root, value, 0);
 	}
 }
 
 template<class T>
-void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value){
+void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value, const int& height){
 	if(treeNode == NULL){
+		int nodeHeight = height + 1;
+
 		treeNode = new Node(value);
+
+		if(nodeHeight > this->height){
+			this->height = nodeHeight;
+		}
 	}
 	else{
 		if(value < treeNode->value){
-			addNode(treeNode->left, value);
+			addNode(treeNode->left, value, height + 1);
 		}
 		else{
-			addNode(treeNode->right, value);
+			addNode(treeNode->right, value, height + 1);
 		}
 	}
 }
@@ -112,12 +122,17 @@ bool BinarySearchTree<T>::nodeHasValue(Node* const& treeNode, const T& value) co
 }
 
 template<class T>
+int BinarySearchTree<T>::getHeight() const{
+	return this->height;
+}
+
+template<class T>
 bool BinarySearchTree<T>::operator==(const BinarySearchTree<T>& bst) const{
 	return false;
 }
 
 template<class T>
-ostream& BinarySearchTree<T>::mostrarBinarySearchTree(ostream& o) const{
+ostream& BinarySearchTree<T>::show(ostream& o) const{
 	o << "[";
 	o << inorder(this->root);
 	o << "]";

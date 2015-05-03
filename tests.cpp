@@ -51,8 +51,28 @@ void check_has_node(){
 	ASSERT_EQ(bst.hasValue(13), true);
 }
 
+void check_height(){
+	BinarySearchTree<int> bst;
+
+	ASSERT_EQ(bst.getHeight(), 0);
+
+	bst.add(1);
+
+	ASSERT_EQ(bst.getHeight(), 1);
+
+	bst.add(2);
+	bst.add(3);
+
+	ASSERT_EQ(bst.getHeight(), 3);
+
+	bst.add(0);
+
+	ASSERT_EQ(bst.getHeight(), 3);
+}
+
 int main() {
 	RUN_TEST(check_add_node);
 	RUN_TEST(check_has_node);
+	RUN_TEST(check_height);
 	return 0;
 }
