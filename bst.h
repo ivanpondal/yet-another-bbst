@@ -17,6 +17,8 @@ class BinarySearchTree{
 
 		void add(const T&);
 
+		void remove(const T&);
+
 		bool hasValue(const T&) const;
 
 		bool isEmpty() const;
@@ -96,6 +98,10 @@ void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value, const int& he
 			addNode(treeNode->right, value, height + 1);
 		}
 	}
+}
+
+template<class T>
+void BinarySearchTree<T>::remove(const T& value){
 }
 
 template<class T>

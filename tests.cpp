@@ -80,10 +80,40 @@ void check_is_empty(){
 	ASSERT_EQ(bst.isEmpty(), false);
 }
 
+void check_remove(){
+	BinarySearchTree<int> bst;
+
+	bst.add(1);
+	bst.add(2);
+
+	bst.remove(2);
+
+	ASSERT_EQ(to_s(bst), "[1]");
+
+	bst.add(2);
+	bst.add(3);
+	bst.add(13);
+
+	bst.remove(3);
+
+	ASSERT_EQ(to_s(bst), "[1, 2, 13]");
+
+	bst.add(6);
+	bst.add(5);
+	bst.add(7);
+	bst.add(15);
+
+	bst.remove(13);
+
+
+	ASSERT_EQ(to_s(bst), "[1, 2, 5, 7, 15]");
+}
+
 int main() {
 	RUN_TEST(check_add_node);
 	RUN_TEST(check_has_node);
 	RUN_TEST(check_height);
 	RUN_TEST(check_is_empty);
+	RUN_TEST(check_remove);
 	return 0;
 }
