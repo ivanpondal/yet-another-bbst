@@ -70,9 +70,20 @@ void check_height(){
 	ASSERT_EQ(bst.getHeight(), 3);
 }
 
+void check_is_empty(){
+	BinarySearchTree<int> bst;
+
+	ASSERT_EQ(bst.isEmpty(), true);
+
+	bst.add(42);
+
+	ASSERT_EQ(bst.isEmpty(), false);
+}
+
 int main() {
 	RUN_TEST(check_add_node);
 	RUN_TEST(check_has_node);
 	RUN_TEST(check_height);
+	RUN_TEST(check_is_empty);
 	return 0;
 }

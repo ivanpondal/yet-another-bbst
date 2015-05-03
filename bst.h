@@ -19,6 +19,8 @@ class BinarySearchTree{
 
 		bool hasValue(const T&) const;
 
+		bool isEmpty() const;
+
 		int getHeight() const;
 
 		bool operator==(const BinarySearchTree<T>&) const;
@@ -119,6 +121,11 @@ bool BinarySearchTree<T>::nodeHasValue(Node* const& treeNode, const T& value) co
 			}
 		}
 	}
+}
+
+template<class T>
+bool BinarySearchTree<T>::isEmpty() const{
+	return this->height == 0;
 }
 
 template<class T>
