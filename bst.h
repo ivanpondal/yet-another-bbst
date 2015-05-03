@@ -17,6 +17,8 @@ class BinarySearchTree{
 
 		void add(const T&);
 
+		bool hasValue(const T&) const;
+
 		bool operator==(const BinarySearchTree<T>&) const;
 
 		ostream& mostrarBinarySearchTree(ostream&) const;
@@ -38,6 +40,7 @@ class BinarySearchTree{
 		Node* root;
 
 		void addNode(Node*&, const T&);
+		bool nodeHasValue(Node* const&, const T&) const;
 		string inorder(Node* const&) const;
 };
 
@@ -63,7 +66,9 @@ BinarySearchTree<T>::~BinarySearchTree(){
 
 template<class T>
 void BinarySearchTree<T>::add(const T& value){
-	addNode(this->root, value);
+	if(!hasValue(value)){
+		addNode(this->root, value);
+	}
 }
 
 template<class T>
@@ -77,6 +82,31 @@ void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value){
 		}
 		else{
 			addNode(treeNode->right, value);
+		}
+	}
+}
+
+template<class T>
+bool BinarySearchTree<T>::hasValue(const T& value) const{
+	return nodeHasValue(this->root, value);
+}
+
+template<class T>
+bool BinarySearchTree<T>::nodeHasValue(Node* const& treeNode, const T& value) const{
+	if(treeNode == NULL){
+		return false;
+	}
+	else{
+		if(treeNode->value == value){
+			return true;
+		}
+		else{
+			if(value < treeNode->value){
+				return nodeHasValue(treeNode->left, value);
+			}
+			else{
+				return nodeHasValue(treeNode->right, value);
+			}
 		}
 	}
 }
