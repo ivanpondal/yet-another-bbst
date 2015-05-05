@@ -49,6 +49,7 @@ class BinarySearchTree{
 		void addNode(Node*&, const T&, const int&);
 		bool nodeHasValue(Node* const&, const T&) const;
 		Node* findParentNode(Node* const&, const T&) const;
+		void removeNode(Node*&, const T&);
 		string inorder(Node* const&) const;
 };
 
@@ -103,31 +104,37 @@ void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value, const int& he
 
 template<class T>
 void BinarySearchTree<T>::remove(const T& value){
-	Node* targetNode;
-
 	if(this->root->value == value){
-		targetNode = this->root;
-		if(targetNode->left == NULL && targetNode->right == NULL){
-			this->root = NULL;
-			delete targetNode;
-		}
+		removeNode(this->root, value);
 	}
 	else{
 		Node* parentNode = findParentNode(this->root, value);
 
 		if(value < parentNode->value){
-			targetNode = parentNode->left;
-			if(targetNode->left == NULL && targetNode->right == NULL){
-				parentNode->left = NULL;
-				delete targetNode;
-			}
+			removeNode(parentNode->left, value);
 		}
 		else{
-			targetNode = parentNode->right;
-			if(targetNode->left == NULL && targetNode->right == NULL){
-				parentNode->right = NULL;
-				delete targetNode;
-			}
+			removeNode(parentNode->right, value);
+		}
+	}
+}
+
+template<class T>
+void BinarySearchTree<T>::removeNode(Node*& parentNode, const T& value){
+	Node* targetNode = parentNode;
+	if(targetNode->left == NULL && targetNode->right == NULL){
+		parentNode = NULL;
+		delete targetNode;
+	}
+	else if((targetNode->left != NULL && targetNode->right == NULL) ||
+			(targetNode->left == NULL && targetNode->right != NULL)){
+		if(targetNode->left != NULL){
+			parentNode = targetNode->left;
+			delete targetNode;
+		}
+		else{
+			parentNode = targetNode->right;
+			delete targetNode;
 		}
 	}
 }
