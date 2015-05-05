@@ -48,6 +48,7 @@ class BinarySearchTree{
 
 		void addNode(Node*&, const T&, const int&);
 		bool nodeHasValue(Node* const&, const T&) const;
+		Node* findParentNode(Node* const&, const T&) const;
 		string inorder(Node* const&) const;
 };
 
@@ -102,6 +103,53 @@ void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value, const int& he
 
 template<class T>
 void BinarySearchTree<T>::remove(const T& value){
+	Node* targetNode;
+
+	if(this->root->value == value){
+		targetNode = this->root;
+		if(targetNode->left == NULL && targetNode->right == NULL){
+			this->root = NULL;
+			delete targetNode;
+		}
+	}
+	else{
+		Node* parentNode = findParentNode(this->root, value);
+
+		if(value < parentNode->value){
+			targetNode = parentNode->left;
+			if(targetNode->left == NULL && targetNode->right == NULL){
+				parentNode->left = NULL;
+				delete targetNode;
+			}
+		}
+		else{
+			targetNode = parentNode->right;
+			if(targetNode->left == NULL && targetNode->right == NULL){
+				parentNode->right = NULL;
+				delete targetNode;
+			}
+		}
+	}
+}
+
+template<class T>
+typename BinarySearchTree<T>::Node* BinarySearchTree<T>::findParentNode(Node* const& treeNode, const T& value) const{
+	if(value < treeNode->value){
+		if(treeNode->left->value == value){
+			return treeNode;
+		}
+		else{
+			return findParentNode(treeNode->left, value);
+		}
+	}
+	else{
+		if(treeNode->right->value == value){
+			return treeNode;
+		}
+		else{
+			return findParentNode(treeNode->right, value);
+		}
+	}
 }
 
 template<class T>

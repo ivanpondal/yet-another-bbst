@@ -84,6 +84,12 @@ void check_remove(){
 	BinarySearchTree<int> bst;
 
 	bst.add(1);
+
+	bst.remove(1);
+
+	ASSERT_EQ(to_s(bst), "[]");
+
+	bst.add(1);
 	bst.add(2);
 
 	bst.remove(2);
