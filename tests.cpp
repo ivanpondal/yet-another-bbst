@@ -112,7 +112,7 @@ void check_remove(){
 	bst.remove(13);
 
 
-	ASSERT_EQ(to_s(bst), "[1, 2, 5, 7, 15]");
+	ASSERT_EQ(to_s(bst), "[1, 2, 5, 6, 7, 15]");
 }
 
 int main() {

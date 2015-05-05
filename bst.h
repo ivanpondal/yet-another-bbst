@@ -49,7 +49,8 @@ class BinarySearchTree{
 		void addNode(Node*&, const T&, const int&);
 		bool nodeHasValue(Node* const&, const T&) const;
 		Node* findParentNode(Node* const&, const T&) const;
-		void removeNode(Node*&, const T&);
+		Node* findParentPredecessor(Node* const&) const;
+		void removeNode(Node*&);
 		string inorder(Node* const&) const;
 };
 
@@ -105,22 +106,22 @@ void BinarySearchTree<T>::addNode(Node*& treeNode, const T& value, const int& he
 template<class T>
 void BinarySearchTree<T>::remove(const T& value){
 	if(this->root->value == value){
-		removeNode(this->root, value);
+		removeNode(this->root);
 	}
 	else{
 		Node* parentNode = findParentNode(this->root, value);
 
 		if(value < parentNode->value){
-			removeNode(parentNode->left, value);
+			removeNode(parentNode->left);
 		}
 		else{
-			removeNode(parentNode->right, value);
+			removeNode(parentNode->right);
 		}
 	}
 }
 
 template<class T>
-void BinarySearchTree<T>::removeNode(Node*& parentNode, const T& value){
+void BinarySearchTree<T>::removeNode(Node*& parentNode){
 	Node* targetNode = parentNode;
 	if(targetNode->left == NULL && targetNode->right == NULL){
 		parentNode = NULL;
@@ -135,6 +136,17 @@ void BinarySearchTree<T>::removeNode(Node*& parentNode, const T& value){
 		else{
 			parentNode = targetNode->right;
 			delete targetNode;
+		}
+	}
+	else{
+		if(targetNode->left->right == NULL){
+			parentNode->value = T(targetNode->left->value);
+			removeNode(targetNode->left);
+		}
+		else{
+			targetNode = findParentPredecessor(parentNode->left);
+			parentNode->value = T(targetNode->right->value);
+			removeNode(targetNode->right);
 		}
 	}
 }
@@ -156,6 +168,16 @@ typename BinarySearchTree<T>::Node* BinarySearchTree<T>::findParentNode(Node* co
 		else{
 			return findParentNode(treeNode->right, value);
 		}
+	}
+}
+
+template<class T>
+typename BinarySearchTree<T>::Node* BinarySearchTree<T>::findParentPredecessor(Node* const& treeNode) const{
+	if(treeNode->right->right == NULL){
+		return treeNode;
+	}
+	else{
+		return findParentPredecessor(treeNode->right);
 	}
 }
 
