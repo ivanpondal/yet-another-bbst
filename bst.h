@@ -51,6 +51,8 @@ class BinarySearchTree{
 		Node* findParentNode(Node* const&, const T&) const;
 		Node* findParentPredecessor(Node* const&) const;
 		void removeNode(Node*&);
+		void deleteNodes(Node*&);
+		void copyNodes(Node*&, Node* const&);
 		string inorder(Node* const&) const;
 };
 
@@ -69,10 +71,34 @@ BinarySearchTree<T>::BinarySearchTree(){
 
 template<class T>
 BinarySearchTree<T>::BinarySearchTree(const BinarySearchTree<T>& bst){
+	copyNodes(this->root, bst.root);
+}
+
+template<class T>
+void BinarySearchTree<T>::copyNodes(Node*& treeNode, Node* const& originalNode){
+	if(originalNode != NULL){
+		treeNode = new Node(originalNode->value);
+		copyNodes(treeNode->left, originalNode->left);
+		copyNodes(treeNode->right, originalNode->right);
+	}
 }
 
 template<class T>
 BinarySearchTree<T>::~BinarySearchTree(){
+	deleteNodes(this->root);
+}
+
+template<class T>
+void BinarySearchTree<T>::deleteNodes(Node*& treeNode){
+	if(treeNode != NULL){
+		Node* leftNode = treeNode->left;
+		Node* rightNode = treeNode->right;
+
+		delete treeNode;
+
+		deleteNodes(leftNode);
+		deleteNodes(rightNode);
+	}
 }
 
 template<class T>
@@ -218,7 +244,11 @@ int BinarySearchTree<T>::getHeight() const{
 
 template<class T>
 bool BinarySearchTree<T>::operator==(const BinarySearchTree<T>& bst) const{
-	return false;
+	if(!(this->isEmpty() == bst.isEmpty() && this->getHeight() == bst.getHeight())){
+		return false;
+	}
+
+	return true;
 }
 
 template<class T>

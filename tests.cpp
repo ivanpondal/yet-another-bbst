@@ -115,11 +115,68 @@ void check_remove(){
 	ASSERT_EQ(to_s(bst), "[1, 2, 5, 6, 7, 15]");
 }
 
+void check_equal(){
+	BinarySearchTree<int> bst;
+	BinarySearchTree<int> otherBst;
+
+	bst.add(1);
+	bst.add(7);
+	bst.add(6);
+
+	ASSERT_EQ(bst == otherBst, false);
+
+	otherBst.add(1);
+	otherBst.add(7);
+	otherBst.add(6);
+
+	ASSERT_EQ(bst == otherBst, true);
+
+	otherBst.remove(1);
+	otherBst.remove(7);
+	otherBst.remove(6);
+
+	otherBst.add(7);
+	otherBst.add(6);
+	otherBst.add(1);
+
+	ASSERT_EQ(bst == otherBst, false);
+
+	otherBst.remove(1);
+	otherBst.remove(7);
+	otherBst.remove(6);
+
+	otherBst.add(1);
+	otherBst.add(7);
+	otherBst.add(5);
+
+	ASSERT_EQ(bst == otherBst, false);
+
+	otherBst.remove(5);
+	otherBst.add(6);
+
+	ASSERT_EQ(bst == otherBst, true);
+}
+
+void check_copy(){
+	BinarySearchTree<int> bst;
+
+	bst.add(-24);
+	bst.add(3);
+	bst.add(5);
+	bst.add(200);
+
+	BinarySearchTree<int> copyBst = BinarySearchTree<int>(bst);
+
+	ASSERT_EQ(to_s(copyBst), "[-24, 3, 5, 200]");
+}
+
 int main() {
 	RUN_TEST(check_add_node);
 	RUN_TEST(check_has_node);
 	RUN_TEST(check_height);
 	RUN_TEST(check_is_empty);
 	RUN_TEST(check_remove);
+	RUN_TEST(check_equal);
+	RUN_TEST(check_copy);
 	return 0;
 }
