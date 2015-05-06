@@ -53,6 +53,7 @@ class BinarySearchTree{
 		void removeNode(Node*&);
 		void deleteNodes(Node*&);
 		void copyNodes(Node*&, Node* const&);
+		bool sameNodes(Node* const&, Node* const&) const;
 		string inorder(Node* const&) const;
 };
 
@@ -248,7 +249,26 @@ bool BinarySearchTree<T>::operator==(const BinarySearchTree<T>& bst) const{
 		return false;
 	}
 
-	return true;
+	return sameNodes(this->root, bst.root);
+}
+
+template<class T>
+bool BinarySearchTree<T>::sameNodes(Node* const& treeNode, Node* const& otherTreeNode) const{
+	if(treeNode == NULL && otherTreeNode == NULL){
+		return true;
+	}
+	else if(treeNode != NULL && otherTreeNode != NULL){
+		if(treeNode->value == otherTreeNode->value){
+			return sameNodes(treeNode->left, otherTreeNode->left) &&
+				sameNodes(treeNode->right, otherTreeNode->right);
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
 }
 
 template<class T>
